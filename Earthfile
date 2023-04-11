@@ -32,6 +32,11 @@ subbuild1:
     RUN mix release
     SAVE ARTIFACT /app/_build/${MIX_ENV}/rel/my_app my_app
 
+subbuild3:
+    FROM +subbuild1
+    SAVE IMAGE --cache-hint
+    
+
 subbuild2:
     FROM ${RUNNER_IMAGE}
     RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales   && apt-get clean && rm -f /var/lib/apt/lists/*_*
@@ -45,7 +50,8 @@ subbuild2:
     COPY --chown=nobody:root +subbuild1/my_app ./
     USER nobody
     CMD ["/app/bin/server"]
-    SAVE IMAGE 
+    SAVE IMAGE --cache-hint
 
 build:
     BUILD +subbuild2
+    BUILD +subbuild3

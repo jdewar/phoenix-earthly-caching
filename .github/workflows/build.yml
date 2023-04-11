@@ -35,5 +35,13 @@ jobs:
         if: inputs.reset == 'prune-reset'
         run: earthly prune --reset
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Do Earthly
-        run: earthly +build
+        run: earthly --ci --remote-cache=ghcr.io/my-app:cache --push +build
+
