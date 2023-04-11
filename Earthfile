@@ -4,12 +4,14 @@ VERSION 0.7
 # the conversion is done on a best-effort basis
 # and might not follow best practices, please
 # visit https://docs.earthly.dev for Earthfile guides
+
+ARG --global ELIXIR_VERSION=1.14.3
+ARG --global OTP_VERSION=25.1
+ARG --global DEBIAN_VERSION=bullseye-20220801-slim
+ARG --global BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
+ARG --global RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
+
 subbuild1:
-    ARG ELIXIR_VERSION=1.14.3
-    ARG OTP_VERSION=25.1
-    ARG DEBIAN_VERSION=bullseye-20220801-slim
-    ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
-    ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
     FROM ${BUILDER_IMAGE}
     RUN apt-get update -y && apt-get install -y build-essential git     && apt-get clean && rm -f /var/lib/apt/lists/*_*
     WORKDIR /app
