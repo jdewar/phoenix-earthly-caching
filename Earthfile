@@ -50,7 +50,7 @@ subbuild2:
     COPY --chown=nobody:root +subbuild1/my_app ./
     USER nobody
     CMD ["/app/bin/server"]
-    SAVE IMAGE --cache-hint
+    SAVE IMAGE --push ghcr.io/jdewar/my-app:cache
 
 build:
     BUILD +subbuild2
