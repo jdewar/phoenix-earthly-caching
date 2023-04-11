@@ -34,8 +34,7 @@ subbuild1:
 
 subbuild3:
     FROM +subbuild1
-    SAVE IMAGE --cache-hint
-    
+    SAVE IMAGE --push ghcr.io/jdewar/my-app:cache
 
 subbuild2:
     FROM ${RUNNER_IMAGE}
@@ -50,7 +49,7 @@ subbuild2:
     COPY --chown=nobody:root +subbuild1/my_app ./
     USER nobody
     CMD ["/app/bin/server"]
-    SAVE IMAGE --push ghcr.io/jdewar/my-app:cache
+    SAVE IMAGE --push ghcr.io/jdewar/my-app:latest
 
 build:
     BUILD +subbuild2
