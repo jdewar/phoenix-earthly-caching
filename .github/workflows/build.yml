@@ -43,5 +43,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Do Earthly
-        run: earthly --ci --remote-cache=ghcr.io/my-app:cache --push +build
+        run: earthly --verbose --ci --remote-cache=ghcr.io/my-app:cache --push +build
 
