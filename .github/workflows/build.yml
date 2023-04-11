@@ -1,0 +1,39 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      reset:
+        description: 'Reset cache'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - 'no'
+        - 'prune'
+        - 'prune-reset'
+jobs:
+  release:
+    name: Build Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Github repo
+        uses: actions/checkout@v3
+
+      - name: Setup Earthly
+        uses: earthly/actions/setup-earthly@v1
+
+      - name: Earthly version
+        run: earthly --version
+
+      - name: Maybe prune build context
+        if: inputs.reset == 'reset'
+        run: earthly prune
+
+      - name: Maybe reset build context
+        if: inputs.reset == 'prune-reset'
+        run: earthly prune --reset
+
+      - name: Do Earthly
+        run: earthly +build
